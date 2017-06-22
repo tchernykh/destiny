@@ -67,6 +67,7 @@ if (stashed) {
 }
 
 result = shelljs.exec('git tag -l', {silent: false});
+console.log("git tag -l result: " + result);
 
 if (result.code !== 0) {
     console.log('Error: Git list failed');
@@ -74,10 +75,12 @@ if (result.code !== 0) {
 }
 
 var list = result.stdout.slice(0, -1).split('\n');
+console.log("list: " + list);
 
 var tags = [];
 
 for (var i in list) {
+    console.log("list item: " + list[i]);
 
     if (list[i].indexOf("_api_v") == 0 || list[i].indexOf("_api_staging_v") == 0) {
 
@@ -92,6 +95,7 @@ for (var i in list) {
             path: tagPath
         }
 
+        console.log("list push: " + tag);
         tags.push(tag);
     }
 }
@@ -114,6 +118,7 @@ fs.readdirSync("./config/env").filter(function(file) {
 });
 
 if (currentBranch !== "master") {
+    console.log("push current: " + currentBranch);
     tags.push({
         tag: currentBranch,
         path: currentBranch
