@@ -124,6 +124,12 @@ if (currentBranch !== "master") {
         path: currentBranch
     });
 }
+console.log("tags: " + tags);
+
+console.log("git branch -a");
+shelljs.exec('git branch -a', {silent: false});
+console.log("git fetch");
+shelljs.exec('git fetch', {silent: false});
 
 for (var i in tags) {
     processTag(i);
