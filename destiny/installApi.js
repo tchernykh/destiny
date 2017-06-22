@@ -18,7 +18,7 @@ var nodeEnv = process.env.NODE_ENV;
 fs.removeSync(outputPath);
 fs.mkdirSync(outputPath);
 
-result = shelljs.exec('git rev-parse --abbrev-ref HEAD', {silent: true});
+result = shelljs.exec('git rev-parse --abbrev-ref HEAD', {silent: false});
 
 if (result.code !== 0) {
     console.log('Error: Unable to determine current branch. More details:');
@@ -36,7 +36,7 @@ if (currentBranch == "HEAD") {
     console.log("On " + currentBranch);
 }
 
-result = shelljs.exec('git stash create', {silent: true});
+result = shelljs.exec('git stash create', {silent: false});
 
 if (result.code !== 0) {
     console.log('Error: Unable to stash');
@@ -51,14 +51,14 @@ if (stashed) {
 
     console.log("Stashed changes");
 
-    result = shelljs.exec('git stash store -m "Stashing to install API" ' + stashCommit, {silent: true});
+    result = shelljs.exec('git stash store -m "Stashing to install API" ' + stashCommit, {silent: false});
 
     if (result.code !== 0) {
         console.log('Error: Unable to stash store');
         shelljs.exit(1);
     }
 
-    result = shelljs.exec('git reset --hard', {silent: true});
+    result = shelljs.exec('git reset --hard', {silent: false});
 
     if (result.code !== 0) {
         console.log('Error: Unable to reset to HEAD');
@@ -66,7 +66,7 @@ if (stashed) {
     }
 }
 
-result = shelljs.exec('git tag -l', {silent: true});
+result = shelljs.exec('git tag -l', {silent: false});
 
 if (result.code !== 0) {
     console.log('Error: Git list failed');
@@ -133,7 +133,10 @@ function processTag(index) {
 
     console.log("Processing tag " + currentTagName);
 
-    var result = shelljs.exec('git checkout ' + currentTagName, {silent: true});
+    var result = shelljs.exec('git checkout ' + currentTagName, {silent: false});
+
+    console.log("Checkout res: " + result);
+    shelljs.exec('git status', {silent: false});
 
     if (result.code !== 0) {
         console.log('Error: Unable to checkout ' + currentTagName);
@@ -143,7 +146,7 @@ function processTag(index) {
     var dest = path.join(outputPath, currentTag.path, endpointPath);
     var dependMocksDest = path.join(outputPath, currentTag.path, dependMocksPath);
 
-    result = shelljs.exec('git ls-tree --full-tree -r HEAD', {silent: true});
+    result = shelljs.exec('git ls-tree --full-tree -r HEAD', {silent: false});
 
     if (result.code !== 0) {
         console.log('Error: Unable to checkout ' + currentTagName);
@@ -219,7 +222,7 @@ function exit(code, message) {
         console.log(message);
     }
 
-    var result = shelljs.exec('git checkout ' + currentBranch, {silent: true});
+    var result = shelljs.exec('git checkout ' + currentBranch, {silent: false});
 
     if (result.code !== 0) {
         console.log('Error: Unable to checkout ' + currentBranch);
@@ -229,7 +232,7 @@ function exit(code, message) {
     if (stashed) {
 
         console.log("Applying and popping stashed changes");
-        result = shelljs.exec('git stash pop', {silent: true});
+        result = shelljs.exec('git stash pop', {silent: false});
 
         if (result.code !== 0) {
             console.log('Error: Unable to pop git stash');
