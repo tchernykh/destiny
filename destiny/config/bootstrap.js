@@ -63,6 +63,10 @@ module.exports.bootstrap = function(cb) {
     destiny.httpLog = bunyan.createLogger({
         name: sails.config.destiny.appName,
         streams: [
+            {
+                level: 'info',
+                stream: process.stdout
+            },
             logConfig
         ]
     });

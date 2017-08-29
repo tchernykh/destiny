@@ -1645,6 +1645,7 @@ ProcessRequest.prototype.logHttpError = function(msg, props) {
     }
 
     console.error("mes: " + msg + " obj:" + JSON.stringify(obj));
+    sails._destiny.httpLog.info("test " + self.source.path);
     sails._destiny.httpLog.error(obj, msg);
 }
 
